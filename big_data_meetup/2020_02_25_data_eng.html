@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Data Engineering at Education Analytics</title>
+    <meta charset="utf-8" />
+    <script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-1.3.1/leaflet.js"></script>
+    <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+    <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+    <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: inverse, center, middle
+
+.center[
+![](ea_logo.png)
+
+# Data Engineering at Education Analytics 
+
+### Jordan Mader, Director of Analytics Engineering
+
+### Erik Joranlien, Manager of Data Engineering
+
+#### github.com/jordanmader13/slides/big_data_meetup
+
+#### Feb 25, 2020
+
+]
+
+---
+
+## Outline of this talk
+
+-	Overview of a project we are working on
+
+--
+
+-	Focus on a few unique technical challenges we encountered
+
+--
+
+-	Upcoming work and new problems to solve
+
+--
+
+-	Demo a few ways the data is used in the field by educators, administrators, parents/families, students
+
+--
+
+-	Note: A big team works on this at EA, you will hear from only some of us, but not most who have contributed important things to this work
+
+---
+
+## Who we are
+-	Education Analytics, Inc. is a non-profit organization that partners with school districts and state departments of education to use data and analytics to make better decisions
+
+--
+
+-	Our team's background is in implementing complex econometric methods
+
+--
+
+-	Economists &amp; statisticians, research analysts, data engineers, software developers, data strategists 
+
+--
+
+-	Hiring (research analysts and data engineers!)
+
+--
+
+-	Headquartered in Madison, WI
+
+<div id="htmlwidget-799613e277c4b881a4cf" style="width:100%;height:300px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-799613e277c4b881a4cf">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[-43.075023,-89.381447,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"EA Headquarters",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[43.075023,-89.381447],16,[]],"limits":{"lat":[-43.075023,-43.075023],"lng":[-89.381447,-89.381447]}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+.center[
+![](ea_logo.png)
+
+CORE Districts is a non-profit network of California school districts working to innovate,
+implement, and scale new strategies and tools that eliminate equity and achievement gaps and lead to successful outcomes
+for all students
+
+The CORE Data Collaborative encompasses 3 million students in 100+ districts including Los Angeles, San Francisco, Oakland, Sacramento, Fresno, and Long Beach. 
+
+]
+.center[
+![](download.jpg)
+]
+---
+
+## Project outline
+
+-	CORE Districts wanted to create a data system to monitor performance metrics and conduct research oriented toward improvement 
+
+--
+
+- Goal: More innovation and faster turn-around than the state provides; foster collaboration between districts. 
+
+    - Metrics about a school year often come out in January of the following year 
+
+--
+
+- Initially, we provided one part: an annual analysis of student growth
+
+--
+
+-	First try: university research center-- files uploaded, grad students write code to compute metrics, CSV of results shared
+
+--
+
+-	Second try: hired a for-profit data warehousing &amp; dashboarding vendor
+
+--
+
+-	Third try: we decided to build something ourselves 
+
+--
+
+-	One note: our data isn’t really that “big” by most standards!
+
+---
+
+## System requirements
+
+-	150+ school districts (with ~40 data centers) upload source system extracts. 25+ file types. 
+
+    - Annual data covering five years of history
+
+--
+    
+- Get the metric business rules exactly right 
+
+--
+
+- *Never show anything clearly wrong* (like a 0% graduation rate) even if the data meets the spec
+
+--
+
+-	Users need to see updated metrics in a dashboard within 48 hours or know what they need to do to fix it 
+    - Includes metrics from simple averages to grad rates to estimates of school impact on student learning
+
+--
+
+-	Data warehouse for analytics and continued ad-hoc research 
+
+  - One source of truth
+
+---
+
+## Overall design (platform agnostic)
+
+.center[
+&lt;img src="overall_system.png" height="225px" width="800px" /&gt;
+
+]
+
+---
+
+## Key system/project goals
+
+-	Transparency &amp; clarity of business rule calculations
+
+--
+
+-	Extensibility as data collection, metric needs, user base grows
+
+--
+
+-	Fail loudly
+
+--
+
+-	Only execute what needs to be executed
+
+--
+
+-	Be able to reproduce everything that happened 
+
+--
+
+-	Avoid closed or proprietary systems
+
+---
+
+## Design Restrictions
+
+- PII needed to stay on prem for contractual reasons
+
+--
+
+- Business logic in R, where the team was most comfortable
+
+--
+
+- Resilient to bad data
+  - Incorrect labeling, ragged CSVs, uniqueness violations, etc
+  
+--
+
+- Complex aggregates with many dependencies
+
+---
+
+## Initial build tech stack (and reasons)
+
+.center[
+&lt;img src="airflow_logo.png" height="135px" width="300px" /&gt;
+
+Airflow for workflow management
+
+]
+
+
+---
+
+## Initial build tech stack (and reasons)
+
+.center[
+&lt;img src="postgres_logo.jpg" height="240px" width="250px" /&gt;
+
+
+PostgreSQL for data storage, management, simple aggregates
+
+]
+
+
+---
+
+## Initial build tech stack (and reasons)
+
+.center[
+&lt;img src="r_logo.png" height="100px" width="120px" /&gt;
+
+R for more complex analytics code &amp; statistics, and some data manipulation
+
+]
+
+---
+
+## Initial build tech stack (and reasons)
+
+.center[
+&lt;img src="vmware.png" height="100px" width="120px" /&gt;
+
+Currently runs on linux VMs on our own servers
+
+]
+
+---
+
+## Technical problem focus: output caching
+
+-	Airflow is great at orchestrating ordered, dependent operations
+
+--
+
+-	Plan: 
+  - Poll FTP for new files
+  - Cascade changes through the DAGs
+  - Use cached versions of intermediate objects
+
+--
+
+-	But, no built-in way to handle file caching
+
+---
+
+## Technical problem focus: output caching 
+
+.center[
+&lt;img src="simple.png"/&gt;
+
+Typical model
+
+]
+
+---
+
+## Technical problem focus: output caching 
+
+.center[
+&lt;img src="complex.png"/&gt;
+
+Common situation
+
+]
+
+---
+
+## Technical problem focus: output caching 
+
+.center[
+&lt;img src="example.png"/&gt;
+
+Example
+
+]
+
+---
+
+## Technical problem focus: output caching
+
+-	Airflow runs R functions via Bash, collects and stores final line of output in XCom
+
+--
+
+-	We designed all our R functions to return their output path to STDOUT
+
+--
+
+-	New Collect operator:
+  - Poll the XCom table for the output path of the _most recent success_ of each upstream dependency. (Output caching)
+  
+--
+
+  - Implements a new trigger rule (at least one upstream success, no failures)
+
+--
+
+.center[
+&lt;img src="collect_op.png"/&gt;
+]
+
+---
+
+&lt;a href = "http://core-comp-test.edanalytics.net:8080/admin/airflow/graph?execution_date=2019-09-12T20%3A53%3A52&amp;arrange=LR&amp;root=&amp;dag_id=load_dw_ggusd_1819&amp;_csrf_token=ImQ0MDMwMmM1NGZiNjg4YWQxZDdkMzY3NjExYzg4ZmJkMmFiZmU1MWEi.ETX4tQ.o2c1KuCBjhHDBFBM2816JeFbHAQ"&gt;
+A DAG with this operator implemented&lt;/a&gt;
+
+&lt;img src="dag_1.png"&gt;
+
+---
+
+&lt;a href = "http://core-comp-test.edanalytics.net:8080/admin/airflow/log?dag_id=growth_sausd_1819&amp;task_id=hs_fun_run_district_growth&amp;execution_date=2019-12-17T19%3A39%3A05"&gt;
+a successful R call returning XCOM &lt;/a&gt;
+
+&lt;img src="dag_2.png"&gt;
+&lt;img src="dag_21.png"&gt;
+
+---
+
+&lt;a href = "http://core-comp-test.edanalytics.net:8080/admin/airflow/log?task_id=format_dist_results&amp;dag_id=growth_mcoe_1718&amp;execution_date=2020-01-22T21:00:00"&gt;
+and one with an error&lt;/a&gt;
+
+&lt;img src="dag_3.png"&gt;
+
+---
+
+## Technical problem focus: growth model automation
+
+-	New districts join collaborative and want school impact measures
+
+--
+
+- Model predicts student performance and measures relative school impacts
+
+--
+
+-	Solution: 
+  - Collect enough data to fit a stable model
+ - Freeze model calibration parameters, apply them to new incoming data
+
+--
+
+-	Thousands of model parameters modeled in new database schema 
+    -	Re-standardizations
+    -	Covariances and identification
+
+---
+
+## Technical problem focus: growth model automation
+
+-	How to ensure quality in an automated causal model?
+
+--
+
+- Run a lot of tests, give detailed feedback
+
+--
+
+&lt;img src="log_success.png"/&gt;
+
+--
+
+&lt;img src="log_fail.png"/&gt;
+
+---
+
+## Technical problem focus: tracking metadata
+
+--
+
+-	“Why doesn’t my district have a graduation rate in the dashboard?” 
+
+--
+
+-	Solutions: 
+
+--
+
+    - Inventory queries that clarify where data gets “stuck” and why
+    
+--
+    
+    - Shiny to provide stakeholders with visibility into metadata
+
+---
+  
+## Using R Shiny for inventory
+
+&lt;img src="shiny.png"&gt;
+
+---
+
+## Future direction
+
+--
+
+- Leverage an open-source Education data standard.
+
+  - Real-time data, much more granular
+  - Standard REST API instead of flat files
+  - Scale-able to districts outside California
+  
+--
+
+- Columnar data warehouse, ELT
+  
+  - Move calculation closer to the data
+  - Empower districts to bring their own BI tools
+
+--
+
+Tool Choice:
+
+Snowflake, DBT, ???
+
+---
+
+## Uses of the data in the field
+
+- &lt;a href="https://dashboard.coredistricts.org/public/core"&gt;CORE school improvement dashboard for administrators&lt;/a&gt;
+
+- &lt;a href="https://laschoolinfo.coredistricts.org/"&gt;Los Angeles School Info + for public&lt;/a&gt;
+
+- &lt;a href="https://trello.com/c/1swJ9gsS/67-student-reports"&gt; Predictive analytics student reports for students &amp; families&lt;/a&gt;
+
+- &lt;a href="https://projects.invisionapp.com/share/RFTJEJEQ2PG#/screens/387970385_BY_SCHOOL_TAKE_NEW"&gt; School impact measures for administrators&lt;/a&gt;
+
+- &lt;a href="https://edpolicyinca.org/initiatives/core-pace-research-partnership"&gt; Research papers for researchers &amp; practitioners&lt;/a&gt; 
+
+- &lt;a href="https://coredistricts.org/our-work/improvement-communities/break-through-success-community-2/"&gt; Breakthrough Success Community for teachers / school staff&lt;/a&gt;  
+
+---
+
+## Thank You! 
+
+## Slides: github.com/jordanmader13/slides/big_data_meetup
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
