@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Full Ed-Fi Stack Business Line   Product Development</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jordan Mader" />
+    <meta name="date" content="2022-10-18" />
+    <script src="business_line_lead_presentation_files/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Full Ed-Fi Stack Business Line <br></br> Product Development
+### Jordan Mader
+### 2022-10-18
+
+---
+
+
+
+
+
+
+## My current roles
+
+--
+
+
+* Lead Data Engineering team
+--
+
+
+* Product Owner for EDU / Stadium 
+&lt;center&gt;&lt;img src="ecosystem.png" height="80%" width="80%"&gt;&lt;/center&gt;
+
+---
+
+class: center middle
+
+# Business Line Vision
+
+---
+
+## Defining Vision
+
+--
+
+
+* Communicate to the team(s) what actions to take
+--
+
+
+* Focus on the why 
+--
+
+
+* Problems and goals over specific ways to get there
+--
+
+
+* 3-5 years out 
+
+---
+
+## Ed-Fi Stack Business Line Vision
+
+--
+
+
+**Radically reduce the cost of delivering timely research-based analytics to decision makers in school systems.**
+--
+
+
+* Reduce aggregate spending
+--
+
+
+* Leverage advances in technology and open source tools 
+--
+
+
+* Don't fall in love with current tech
+--
+
+
+* Openness is our differentiator
+--
+
+
+**Make it close to free to use data with good methods**
+
+---
+
+## In 5 years if we are successful:
+--
+
+
+* Widespread adoption of Ed-Fi
+--
+
+
+* Widespread adoption of EDU
+--
+
+
+* Small agencies can get basic analytics and dashboards for low cost
+--
+
+
+* EA can build software products and research/analytics services with low data sourcing costs
+--
+
+
+* Researchers inside and outside of EA can access data with a consistent interface
+--
+
+
+* EA develops a 'clearinghouse' of metrics and analytics _definitions_
+
+---
+class: center middle
+
+# Product Management Philosophy
+
+---
+
+## General principles
+--
+
+**Set up autonomous product teams and hold them accountable to outcomes**
+--
+
+* Provide direction on the most important problems to solve
+--
+
+
+* Learn quickly and if you're going to fail, fail fast
+--
+
+
+* Get tangible feedback from real users
+--
+
+
+* Don't try to please everyone at once
+
+---
+
+## Focus on users
+
+--
+
+**Focus everyone on product teams, including engineers, on the experience of users**
+--
+
+
+In platform products, users include researchers, analysts, software developers at EA
+--
+
+
+&lt;center&gt;&lt;img src="example.png"&gt;&lt;/center&gt;
+
+---
+class: center middle
+
+# The technical part
+
+---
+
+## What is a database?
+
+A definition: 
+
+_A system to store data on disks_
+
+_-- plus --_ 
+
+_a computer to save and retrieve the data_
+
+&lt;center&gt;&lt;img src="dataex_1.png"&gt;&lt;/center&gt;
+
+---
+
+## Row-oriented storage
+
+&lt;center&gt;&lt;img src="dataex_2.png"&gt;&lt;/center&gt;
+
+---
+
+## Column-oriented storage
+
+&lt;center&gt;&lt;img src="dataex_3.png"&gt;&lt;/center&gt;
+
+---
+
+## Why should you care?
+
+--
+
+
+** We currently spend a lot of resources moving data between different systems.**
+
+--
+
+Back to this definition of a database:
+
+--
+
+_A system to store data on disks_
+
+_-- plus --_ 
+
+_a computer to save and retrieve the data_
+
+&lt;br&gt;&lt;/br&gt;
+
+--
+
+
+* The new class of databases separates compute from storage. 
+--
+
+
+* Storage cost is already negligible. 
+--
+
+
+* Tradeoff about to be solved
+
+---
+
+## Multiple interfaces to common or redundant storage
+
+&lt;center&gt;&lt;img src="platform_0.png"&gt;&lt;/center&gt;
+
+---
+
+## Multiple interfaces to common or redundant storage
+
+&lt;center&gt;&lt;img src="platform_05.png"&gt;&lt;/center&gt;
+
+---
+
+## Abstraction of logic
+
+&lt;center&gt;&lt;img src="platform_1.png"&gt;&lt;/center&gt;
+
+---
+
+## Abstraction of logic
+
+&lt;center&gt;&lt;img src="platform_99.png"&gt;&lt;/center&gt;
+
+---
+
+## Defining the logic
+
+&lt;center&gt;&lt;img src="platform_25.png"&gt;&lt;/center&gt;
+
+---
+
+## Defining the logic
+
+&lt;center&gt;&lt;img src="platform_3.png"&gt;&lt;/center&gt;
+
+---
+
+## What does this mean / who cares
+--
+
+
+* Old way: move &amp; transform data. Future way: define how to access data. 
+--
+
+
+* Interfaces are virtual and depend on who/what is accessing
+--
+
+
+* Less dependence on "lower-level" tools like AWS or Snowflake
+--
+
+
+* Data coming in can be immediately used for analytics
+
+---
+
+## Implications
+
+--
+
+
+If an agency has Ed-Fi, "apply a lens" instead of "pull and transform data". --&gt;
+*Lower commitment, faster, more secure*
+--
+
+
+Publish definitions (metrics, models, business rules) separate from operating on data. --&gt;
+*Easier to share and scale good methods*
+--
+
+
+Use tools that abstract away from cloud providers. --&gt;
+*Move to the fastest or cheapest*
+--
+&lt;center&gt;&lt;img src="lens.png"&gt;&lt;/center&gt;
+---
+class: center middle
+
+# Questions  
+
+---
+
+## Responsibility and accountability
+
+--
+
+
+* Responsibilities w/r/t impact lead and product development leads
+--
+
+
+* Home of future end user facing products built off this stack
+--
+
+
+* Evaluation of success of a platform business line
+
+---
+class: center, middle
+
+# Thanks!
+
+Slides created via the R packages:
+
+[**xaringan**](https://github.com/yihui/xaringan)&lt;br&gt;
+[gadenbuie/xaringanthemer](https://github.com/gadenbuie/xaringanthemer)
+
+These rely on [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
